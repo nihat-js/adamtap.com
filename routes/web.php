@@ -9,15 +9,17 @@ Route::get('/', function () {
 });
 
 
-Route::group(["prefix" => "subject"], function () {
+Route::group(["prefix" => "subjects"], function () {
   Route::get("/list", [SubjectController::class, "list"]);
-  Route::get("/", [SubjectController::class, "all"]);
-  Route::post("/", [SubjectController::class, "create"]);
-  Route::put("/", [SubjectController::class, "update"]);
-  Route::delete("/", [SubjectController::class, "destroy"]);
+  Route::get("", [SubjectController::class, "all"]);
+  Route::get("{id}", [SubjectController::class, "details"]);
+  Route::post("", [SubjectController::class, "create"]);
+
+  Route::put("/{id}", [SubjectController::class, "update"]);
+  Route::delete("/{id}", [SubjectController::class, "delete"]);
 });
 
-Route::group(["prefix" => "teacher"], function () {
+Route::group(["prefix" => "teachers"], function () {
   Route::get("/list", [TeacherController::class, "list"]);
   Route::get("/", [TeacherController::class, "all"]);
   Route::post("/", [TeacherController::class, "create"]);
