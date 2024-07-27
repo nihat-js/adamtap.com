@@ -14,8 +14,16 @@
 </ul>
 
 
+<div class="flex  justify-content-between mt-5">
+  <h1 class="text-3xl font-bold underline">
+    {{ __("all.teacher") }}
+  </h1>
+  <button class="btn btn-success" data-bs-target="#addModal" data-bs-toggle="modal"> {{ __("all.add_teacher") }}
+  </button>
+</div>
 
-<button data-bs-target="#addModal" data-bs-toggle="modal"> Elave et </button>
+
+
 
 
 <table class="table table-dark mt-5">
@@ -52,28 +60,55 @@
 
 @section("scripts")
 <script>
-  let x = []
   let currentEditedTeacherId
-  select("#addModal .save").addEventListener('click', function () {
-    conole.log("add-modal")
-  })
-
-  select("tbody .edit").addEventListener('click', function () {
-    currentEditedTeacherId = event.target.parent("tr").dataset.id
-    console.log({ currentEditedTeacherId })
-  })
-
-  select("tbody .delete").addEventListener('click', function () {
-    let answer = prompt("Are you sure to delete it")
-    if (!answer) {
-      retun
+  select("#addModal .save").addEventListener('click', async function () {
+    let response = await axios.post("/subjects", {
+      name: select("#addModal [name='name'] ").value,
+      surname: select("#addModal [name='surname'] ").value
+      phoneNumber: select("#addModal [name='phoneNumber'] ").value
+    })
+    if (response.code == 201) {
+      window.location.reload()
     }
+
+  })
+
+  delegateEvent('click', "tbody .edit", async function () {
+    // console.log({ currentEditedTeacherId })
+    currentEditedTeacherId = event.target.closest("tr").dataset.id
+    showLoading()
+    let response = await axios.get(`/subjects/${currentEditedTeacherId}`)
+    select("#editModal [name='name'] ").value = response.data.name
+    select("#editModal [name='about'] ").value = response.data.about
+    hideLoading()
+  })
+
+  select("#editModal .save").addEventListener("click", async function () {
+    let response = await axios.put(`/subjects/${currentEditedTeacherId}`, {
+      name: select("#editModal [name='name'] ").value,
+      about: select("#editModal [name='about'] ").value
+    })
+    if (response.statusText == "OK") {
+      select("#editModal .close").click()
+    }
+  })
+
+  delegateEvent('click', "tbody .delete", async function () {
+    let answer = confirm("Are you sure to delete it")
+    let id = event.target.closest("tr").dataset.id
+    if (!answer) {
+      return
+    }
+    let response = await axios.delete(`/ subjects / ${id}`)
+    window.location.reload()
+    // console.log(response)
     // axios
     // conole.log("add-modal")
   })
 
 
 </script>
+
 
 
 @endsection

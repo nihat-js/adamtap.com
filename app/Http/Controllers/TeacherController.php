@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 
@@ -14,8 +15,11 @@ class TeacherController extends Controller
   {
     $teachers = Teacher::all();
 
+    $subjects = Subject::all();
+
     return view("teacher/list", [
-      "teachers" => $teachers
+      "teachers" => $teachers,
+      "subjects" => $subjects
     ]);
   }
 

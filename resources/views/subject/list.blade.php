@@ -58,7 +58,7 @@
 
 @section("scripts")
 <script>
-  let currentEditedTeacherId
+  let currentEditedSubjectId
   select("#addModal .save").addEventListener('click', async function () {
     let response = await axios.post("/subjects", {
       name: select("#addModal [name='name'] ").value,
@@ -71,17 +71,17 @@
   })
 
   delegateEvent('click', "tbody .edit", async function () {
-    // console.log({ currentEditedTeacherId })
-    currentEditedTeacherId = event.target.closest("tr").dataset.id
+    // console.log({ currentEditedSubjectId })
+    currentEditedSubjectId = event.target.closest("tr").dataset.id
     showLoading()
-    let response = await axios.get(`/subjects/${currentEditedTeacherId}`)
+    let response = await axios.get(`/subjects/${currentEditedSubjectId}`)
     select("#editModal [name='name'] ").value = response.data.name
     select("#editModal [name='about'] ").value = response.data.about
     hideLoading()
   })
 
   select("#editModal .save").addEventListener("click", async function () {
-    let response = await axios.put(`/subjects/${currentEditedTeacherId}`, {
+    let response = await axios.put(`/subjects/${currentEditedSubjectId}`, {
       name: select("#editModal [name='name'] ").value,
       about: select("#editModal [name='about'] ").value
     })

@@ -19,10 +19,17 @@
             <label for="phoneNumber" class="form-label">Phone Number</label>
             <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter phone number" required>
           </div>
+
           <div class="mb-3">
-            <label for="subjects" class="form-label">Subjects</label>
-            <input type="text" class="form-control" id="subjects" placeholder="Enter subjects" required>
+            @foreach ($subjects as $subject)
+        <input type="checkbox" name="subject" value="{{ $subject->id }}">
+        <span> {{$subject->name}} </span>
+      @endforeach
           </div>
+
+
+
+
         </form>
       </div>
       <div class="modal-footer">
